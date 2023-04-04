@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   likeicon: {
+    tintColor: "orange",
     marginRight: 10,
     width: 20,
     height: 20,
