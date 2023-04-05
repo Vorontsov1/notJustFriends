@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, FlatList } from "react-native";
-import FeedPost from './src/components/FeedPost';
-import posts from './assets/data/posts.json';
+import { StyleSheet, View } from "react-native";
+import FeedScreen from "./src/screens/FeedScreen";
+import CreatPostScreen from "./src/screens/CreatPostScreen";
 
 
 
@@ -9,10 +9,7 @@ import posts from './assets/data/posts.json';
 export default function App() {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={posts}
-        renderItem={({item}) => <FeedPost post={item} />}
-      />
+      <CreatPostScreen />
       <StatusBar style="auto" />
     </View>
   );
