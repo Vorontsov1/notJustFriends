@@ -2,6 +2,7 @@ import FeedScreen from '../screens/FeedScreen';
 import CreatPostScreen from '../screens/CreatPostScreen';
 import UpdateProfileScreen from '../screens/UpdateProfileScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {FontAwesome} from '@expo/vector-icons'; 
