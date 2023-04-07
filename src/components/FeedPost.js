@@ -1,147 +1,165 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import LikeImage from '../../assets/images/like.png';
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import LikeImage from "../../assets/images/like.png";
 import {
   Entypo,
   AntDesign,
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 
+const FeedPost = ({ post }) => {
+  const [isLiked, setIsLiked] = useState(false);
 
-
-
-const FeedPost = (props) => { 
-  console.log(props.post);
-  const post = props.post;
+  const navigation = useNavigation();
   return (
-      <View style={styles.post}>
-        {/* header */}
-        <View style={styles.header}>
-          <Image source={{ uri: post.User.image }} style={styles.avatar} />
-          <View>
-            <Text style={styles.name}>{post.User.name}</Text>
-            <Text style={styles.subtitle}>{post.createdAt}</Text>
-          </View>
-          <Entypo
-            name="dots-three-horizontal"
-            size={24}
-            color="red"
-            style={styles.icon}
-          />
+    <Pressable style={styles.post}>
+      {/* Header */}
+      <Pressable
+        style={styles.header}
+        onPress={() => navigation.navigate("Profile", { id: post.User.id })}
+      >
+        <Image source={{ uri: post.User.image }} style={styles.profileImage} />
+        <View>
+          <Text style={styles.name}>{post.User.name}</Text>
+          <Text style={styles.subtitle}>{post.createdAt}</Text>
         </View>
+        <Entypo
+          name="dots-three-horizontal"
+          size={18}
+          color="gray"
+          style={styles.icon}
+        />
+      </Pressable>
 
-        {/* body */}
-        {post.description && (
-          <Text style={styles.description}>{post.description}</Text>
-        )}
+      {/* Body */}
+      {post.description && (
+        <Text style={styles.description}>{post.description}</Text>
+      )}
 
-        {post.image && (
-          <Image style={styles.bgi} source={{ uri: post.image }} />
-        )}
+      {post.image && (
+        <Image source={{ uri: post.image }} style={styles.image} />
+      )}
 
-        {/* footer */}
-        <View style={styles.footer}>
-          {/* statsRow */}
-          <View style={styles.statsRow}>
-            <Image source={LikeImage} style={styles.likeicon} />
-            <Text style={styles.likeBy}>
-              David Linch and {post.numberOfLikes} others
+      {/* Footer */}
+      <View style={styles.footer}>
+        {/* Stats row */}
+        <View style={styles.statsRow}>
+          <Image source={LikeImage} style={styles.likeIcon} />
+          <Text style={styles.likedBy}>
+            Elon Musk and {post.numberOfLikes} others
+          </Text>
+          <Text style={styles.shares}>{post.numberOfShares} shares</Text>
+        </View>
+        {/* Buttons Row  */}
+        <View style={styles.buttonsRow}>
+          <Pressable
+            onPress={() => setIsLiked(!isLiked)}
+            style={styles.iconButton}
+          >
+            <AntDesign
+              name="like2"
+              size={18}
+              color={isLiked ? "royalblue" : "gray"}
+            />
+            <Text
+              style={[
+                styles.iconButtonText,
+                { color: isLiked ? "royalblue" : "gray" },
+              ]}
+            >
+              Like
             </Text>
-            <Text style={styles.shares}>{post.numberOfShares} shares</Text>
+          </Pressable>
+
+          <View style={styles.iconButton}>
+            <FontAwesome5 name="comment-alt" size={18} color="gray" />
+            <Text style={styles.iconButtonText}>Comment</Text>
           </View>
-          {/* Buttons row */}
-          <View style={styles.buttonsRow}>
-            <View style={styles.iconButton}>
-              <AntDesign name="like2" size={18} color="grey" />
-              <Text style={styles.iconButtonText}>Like</Text>
-            </View>
 
-            <View style={styles.iconButton}>
-              <FontAwesome5 name="comment-alt" size={18} color="grey" /> 
-              <Text style={styles.iconButtonText}>Comment</Text>
-            </View>
-
-            <View style={styles.iconButton}>
-              <MaterialCommunityIcons name="share-outline" size={18} color="grey" /> 
-              <Text style={styles.iconButtonText}>Share</Text>
-            </View>
+          <View style={styles.iconButton}>
+            <MaterialCommunityIcons
+              name="share-outline"
+              size={18}
+              color="gray"
+            />
+            <Text style={styles.iconButtonText}>Share</Text>
           </View>
         </View>
       </View>
+    </Pressable>
   );
-}
+};
 
 const styles = StyleSheet.create({
   post: {
-    width: "100%",
-    marginVertical: 10,
-    backgroundColor: "white",
+    marginVertical: 5,
+    backgroundColor: "#fff",
   },
-  // header
+  // Header
   header: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
   },
-  avatar: {
-    width: 60,
-    height: 60,
+  profileImage: {
+    width: 40,
+    height: 40,
     borderRadius: 25,
     marginRight: 10,
   },
   name: {
-    fontWeight: "bold",
-    fontSize: 16,
-    marginLeft: 10,
+    fontWeight: "500",
   },
   subtitle: {
     color: "gray",
-    fontSize: 12,
-    fontWeight: "bold",
-    marginLeft: 10,
   },
   icon: {
     marginLeft: "auto",
   },
-  // body
 
+  // Body
   description: {
     paddingHorizontal: 10,
-    letterSpacing: 1,
     lineHeight: 20,
+    letterSpacing: 0.3,
   },
-  bgi: {
+  image: {
     width: "100%",
     aspectRatio: 1,
     marginTop: 10,
   },
-  // footer
+
+  // Footer
   footer: {
     paddingHorizontal: 10,
   },
   statsRow: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "lightgray",
     paddingVertical: 10,
     flexDirection: "row",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "lightgray",
   },
-  likeicon: {
-    tintColor: "orange",
-    marginRight: 10,
+  likeIcon: {
     width: 20,
     height: 20,
+    marginRight: 5,
   },
-  likeBy: {
+  likedBy: {
     color: "gray",
-    fontSize: 12,
-    fontWeight: "bold",
   },
   shares: {
     marginLeft: "auto",
     color: "gray",
-    fontSize: 12,
-    fontWeight: "bold",
+  },
+
+  // Buttons row
+  buttonsRow: {
+    marginVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   iconButton: {
     flexDirection: "row",
@@ -150,12 +168,7 @@ const styles = StyleSheet.create({
   iconButtonText: {
     marginLeft: 5,
     color: "gray",
-    fontWeight: "bold",
-  },
-  buttonsRow: {
-    marginVertical: 10,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    fontWeight: "500",
   },
 });
 
